@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Twisted Thread</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif;}
+    body {background:#FAFAFA; color:#333;}
+    header {background:#fff; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    header h1 {color:#FF6B6B; font-size:32px; font-family:'Pacifico', cursive;}
+    .dark-btn {background:#ff6b6b; color:white; border:none; border-radius:6px; padding:6px 10px; font-size:16px; cursor:pointer; transition:background 0.3s;}
+    .dark-btn:hover {background:#cc5200;}
+    .login-container {width:350px; margin:80px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.1);}
+    .login-container h2 {text-align:center; margin-bottom:20px; color:#FF6B6B;}
+    .login-container input {width:100%; padding:12px; margin:10px 0; border:1px solid #ccc; border-radius:8px;}
+    .login-container button[type="submit"] {width:100%; padding:12px; background:#cc5200; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;}
+    .login-container button[type="submit"]:hover {background:#b34700;}
+    .login-container label {display:flex; align-items:center; gap:8px; font-size:14px; color:#333; margin:8px 0 12px; cursor:pointer; user-select:none;}
+    .login-container input[type="checkbox"] {width:16px; height:16px; cursor:pointer;}
+    #statusMsg {text-align:center; font-weight:600; color:#cc5200; margin-top:8px;}
+    footer {background:#fff; text-align:center; padding:20px; margin-top:50px; box-shadow:0 -2px 8px rgba(0,0,0,0.05);}
+
+    /* Dark mode */
+    .dark-mode {background:#121212; color:#f2f2f2;}
+    .dark-mode header {background:#2C2C2C;}
+    .dark-mode footer {background:#1A1A1A; color:#FF6B6B;}
+    .dark-mode .login-container {background:#1A1A1A;}
+    .dark-mode .login-container input {background:#2C2C2C; color:#f2f2f2; border-color:#555;}
+    .dark-mode .login-container label {color:#f2f2f2;}
+    .dark-mode .dark-btn {background:#333; color:#ffb6b6;}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Twisted Thread</h1>
+  <nav>
+    <button id="dark-toggle" class="dark-btn">🌙</button>
+  </nav>
+</header>
+
+<div class="login-container">
+  <h2>Login</h2>
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Email or Username" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <label for="showPass">
+      <input type="checkbox" id="showPass"> Show Password
+    </label>
+    <button type="submit">Login</button>
+    <p style="text-align:center; margin-top:15px; font-size:14px;">
+      Don't have an account? <a href="signup.html" style="color:#cc5200; font-weight:600;">Sign up here</a>
+    </p>
+    <p id="statusMsg"></p>
+  </form>
+</div>
+
+<footer>© 2025 Twisted Thread | Handmade with ❤</footer>
+
+<script>
+  const passwordInput = document.getElementById('password');
+  const statusMsg = document.getElementById('statusMsg');
+  const showPass = document.getElementById('showPass');
+
+  showPass.addEventListener('change', () => {
+    passwordInput.type = showPass.checked ? 'text' : 'password';
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = passwordInput.value.trim();
+    if(username === "" || password === "") { alert("Please fill in all fields!"); return; }
+
+    fetch('http://localhost:4000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success) {
+        statusMsg.style.color = "green";
+        statusMsg.textContent = `Welcome, ${data.username}! Logging you in...`;
+        localStorage.setItem("username", data.username);
+        setTimeout(() => window.location.href = "home.html", 1500);
+      } else {
+        statusMsg.style.color = "red";
+        statusMsg.textContent = `❌ ${data.message}`;
+      }
+    })
+    .catch(() => {
+      statusMsg.style.color = "red";
+      statusMsg.textContent = "❌ Backend connection failed!";
+    });
+  });
+
+  // Dark mode
+  const darkToggle = document.getElementById("dark-toggle");
+  if(localStorage.getItem("theme") === "dark"){
+    document.body.classList.add("dark-mode");
+    darkToggle.textContent = "☀️";
+  }
+  darkToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    const isDark = document.body.classList.contains("dark-mode");
+    darkToggle.textContent = isDark ? "☀️" : "🌙";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  });
+</script>
+
+</body>
+</html>

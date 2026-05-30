@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Twisted Thread - Crochet Creations</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background-color:#FAFAFA;
+  color:#333;
+}
+
+/* DARK MODE */
+
+.dark-mode{
+  background-color:#121212;
+  color:#f2f2f2;
+}
+
+.dark-mode header{
+  background-color:#2C2C2C;
+}
+
+.dark-mode footer{
+  background:#1A1A1A;
+  color:#FF6B6B;
+}
+
+.dark-mode nav a{
+  color:#FFB6B6;
+}
+
+.dark-mode nav a:hover{
+  color:#FF6B6B;
+}
+
+.dark-mode .card{
+  background:#2a2a2a;
+  border-color:#ff6b6b;
+}
+
+.dark-mode .card-content{
+  background:#2a2a2a;
+}
+
+.dark-mode .card-content h3{
+  color:#f2f2f2;
+}
+
+/* HEADER */
+
+header{
+  background:#fff;
+  padding:20px 50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+header h1{
+  color:#FF6B6B;
+  font-size:32px;
+  font-family:'Pacifico', cursive;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+nav a{
+  margin-left:20px;
+  text-decoration:none;
+  color:#333;
+  font-weight:600;
+  font-size:14px;
+  transition:0.3s;
+}
+
+nav a:hover{
+  color:#FF6B6B;
+}
+
+/* DARK BUTTON */
+
+.dark-btn{
+  background:none;
+  color:#333;
+  border:none;
+  font-size:18px;
+  margin-left:18px;
+  cursor:pointer;
+  transition:0.3s;
+  display:flex;
+  align-items:center;
+}
+
+.dark-btn:hover{
+  color:#FF6B6B;
+  transform:scale(1.1);
+}
+
+.dark-mode .dark-btn{
+  color:#FFB6B6;
+}
+
+/* USER MENU */
+
+.user-menu{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  margin-left:20px;
+}
+
+.user-btn{
+  background:none;
+  border:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:14px;
+  font-weight:600;
+  color:#333;
+  padding:0;
+  transition:0.3s;
+}
+
+.user-btn:hover{
+  color:#FF6B6B;
+}
+
+.dark-mode .user-btn{
+  color:#FFB6B6;
+}
+
+.dark-mode .user-btn:hover{
+  color:#FF6B6B;
+}
+
+.user-avatar{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#FF6B6B;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+  flex-shrink:0;
+}
+
+.user-chevron{
+  font-size:10px;
+  color:#888;
+  transition:transform 0.25s;
+}
+
+.user-menu.open .user-chevron{
+  transform:rotate(180deg);
+}
+
+.dark-mode .user-chevron{
+  color:#aaa;
+}
+
+/* DROPDOWN */
+
+.dropdown{
+  display:none;
+  position:absolute;
+  right:0;
+  top:calc(100% + 12px);
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.12);
+  min-width:180px;
+  z-index:999;
+  overflow:hidden;
+  border:1px solid #f0e0e0;
+}
+
+.dropdown.show{
+  display:block;
+  animation:fadeDown 0.2s ease;
+}
+
+@keyframes fadeDown{
+  from{ opacity:0; transform:translateY(-6px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.dropdown-header{
+  padding:14px 16px 10px;
+  border-bottom:1px solid #f5e8e8;
+}
+
+.dropdown-header p{
+  font-size:13px;
+  font-weight:700;
+  color:#333;
+  margin:0 0 2px;
+}
+
+.dropdown-header span{
+  font-size:11px;
+  color:#999;
+  font-weight:400;
+}
+
+.dropdown button{
+  width:100%;
+  padding:11px 16px;
+  border:none;
+  background:none;
+  text-align:left;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.2s;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#555;
+}
+
+.dropdown button:hover{
+  background:#fff5f5;
+  color:#e63946;
+}
+
+.dropdown button .icon{
+  font-size:15px;
+  width:16px;
+  text-align:center;
+}
+
+.dark-mode .dropdown{
+  background:#2b2b2b;
+  border:1px solid #3a3a3a;
+}
+
+.dark-mode .dropdown-header{
+  border-bottom:1px solid #3a3a3a;
+}
+
+.dark-mode .dropdown-header p{
+  color:#f2f2f2;
+}
+
+.dark-mode .dropdown-header span{
+  color:#888;
+}
+
+.dark-mode .dropdown button{
+  color:#ccc;
+}
+
+.dark-mode .dropdown button:hover{
+  background:#333;
+  color:#ff8e8e;
+}
+
+/* SLIDESHOW */
+
+.slideshow-container{
+  position:relative;
+  max-width:100%;
+  height:500px;
+  margin:auto;
+  overflow:hidden;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.1);
+}
+
+.slide{
+  display:none;
+  width:100%;
+  height:500px;
+}
+
+.slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+/* SEARCH */
+
+#search{
+  padding:12px 16px;
+  width:320px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  display:block;
+  margin:35px auto;
+  font-size:15px;
+  outline:none;
+}
+
+#search:focus{
+  border-color:#ff6b6b;
+  box-shadow:0 0 10px rgba(255,107,107,0.2);
+}
+
+/* PRODUCTS */
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+  padding:50px;
+  justify-items:center;
+}
+
+.card{
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  border:4px solid #FF6B6B;
+  box-shadow:0 6px 18px rgba(0,0,0,0.1);
+  transition:0.35s;
+  display:flex;
+  flex-direction:column;
+  max-width:300px;
+  width:100%;
+  position:relative;
+}
+
+.card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 14px 28px rgba(0,0,0,0.18);
+}
+
+.card img{
+  width:100%;
+  height:320px;
+  object-fit:cover;
+  display:block;
+}
+
+.card-overlay{
+  position:absolute;
+  top:12px;
+  right:12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  opacity:0;
+  transition:0.3s;
+}
+
+.card:hover .card-overlay{
+  opacity:1;
+}
+
+.card-overlay a{
+  background:rgba(204,82,0,0.9);
+  color:#fff;
+  padding:6px 12px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:12px;
+  text-align:center;
+}
+
+.card-overlay a:hover{
+  background:#b34700;
+}
+
+.like-btn{
+  background:rgba(255,255,255,0.95);
+  border:none;
+  border-radius:8px;
+  font-size:18px;
+  cursor:pointer;
+  padding:5px 9px;
+  transition:0.2s;
+}
+
+.like-btn:hover{
+  transform:scale(1.1);
+  background:#fff;
+}
+
+.card-content{
+  padding:14px;
+  background:#fff;
+  border-top:3px solid #cc5200;
+}
+
+.card-content h3{
+  font-size:14px;
+  font-weight:600;
+  color:#333;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-align:center;
+}
+
+/* FOOTER */
+
+footer{
+  background:#fff;
+  padding:30px;
+  text-align:center;
+  margin-top:50px;
+  box-shadow:0 -2px 8px rgba(0,0,0,0.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <h1>Twisted Thread</h1>
+
+  <nav>
+
+    <a href="home.html">Home</a>
+
+    <a href="cart.html" id="cart-link">Cart</a>
+
+    <a href="wishlist.html" id="wishlist-count">Wishlist</a>
+
+    <!-- USER MENU -->
+
+    <div class="user-menu" id="user-menu">
+
+      <button class="user-btn" id="user-btn" aria-haspopup="true" aria-expanded="false">
+        <div class="user-avatar" id="user-avatar">G</div>
+        <span>Hi, </span><span id="nav-username">Guest</span>
+        <span class="user-chevron">▾</span>
+      </button>
+
+      <div class="dropdown" id="dropdown-menu" role="menu">
+
+        <div class="dropdown-header">
+          <p id="dropdown-name">Guest</p>
+          <span>My Account</span>
+        </div>
+
+        <button onclick="logout()" role="menuitem">
+          Logout
+        </button>
+
+      </div>
+
+    </div>
+
+    <button id="dark-toggle" class="dark-btn" title="Toggle Dark Mode">🌙</button>
+
+  </nav>
+
+</header>
+
+<!-- SLIDESHOW -->
+
+<div class="slideshow-container">
+
+  <div class="slide">
+    <img src="https://c02.purpledshub.com/uploads/sites/51/2021/02/easy-crochet-patterns-a88842b.jpg?w=1200">
+  </div>
+
+  <div class="slide">
+    <img src="https://i.ytimg.com/vi/aMPTHBb7lp4/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBwHBc-O-_16uEaGiJTPqvYtzcbtA">
+  </div>
+
+</div>
+
+<!-- SEARCH -->
+
+<input type="text" id="search" placeholder="Search products...">
+
+<!-- PRODUCTS -->
+
+<section class="products"></section>
+
+<!-- FOOTER -->
+
+<footer>
+  &copy; 2025 Twisted Thread | Handmade with ❤
+</footer>
+
+<script>
+
+/* SLIDESHOW */
+
+let slideIndex = 0;
+
+function showSlides(){
+  let slides = document.getElementsByClassName("slide");
+  for(let i=0; i<slides.length; i++){
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if(slideIndex > slides.length){ slideIndex = 1; }
+  slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 3000);
+}
+
+showSlides();
+
+/* USERNAME & AVATAR */
+
+const storedName = localStorage.getItem("username") || "Guest";
+
+document.getElementById("nav-username").textContent = storedName;
+document.getElementById("dropdown-name").textContent = storedName;
+
+const initial = storedName.charAt(0).toUpperCase();
+document.getElementById("user-avatar").textContent = initial;
+
+/* DROPDOWN */
+
+const userMenu = document.getElementById("user-menu");
+const userBtn  = document.getElementById("user-btn");
+const dropdown = document.getElementById("dropdown-menu");
+
+userBtn.addEventListener("click", (e)=>{
+  e.stopPropagation();
+  const isOpen = dropdown.classList.toggle("show");
+  userMenu.classList.toggle("open", isOpen);
+  userBtn.setAttribute("aria-expanded", isOpen);
+});
+
+document.addEventListener("click", ()=>{
+  dropdown.classList.remove("show");
+  userMenu.classList.remove("open");
+  userBtn.setAttribute("aria-expanded", false);
+});
+
+/* LOGOUT */
+
+function logout(){
+  localStorage.removeItem("username");
+  window.location.href = "login.html";
+}
+
+/* WISHLIST COUNT */
+
+async function updateWishlistCount(){
+  try {
+    const res = await fetch(`http://localhost:4000/wishlist/${username}`);
+    const data = await res.json();
+    const el = document.getElementById("wishlist-count");
+    if(el){ el.textContent = `Wishlist (${(data.items||[]).length})`; }
+  } catch(e) {}
+}
+
+const section    = document.querySelector(".products");
+const cartLinkEl = document.getElementById("cart-link");
+const searchInput= document.getElementById("search");
+const username   = localStorage.getItem("username") || "guest";
+
+/* PRODUCTS */
+
+fetch("products.json")
+.then(res=>res.json())
+.then(products=>{
+
+  function display(list){
+
+    section.innerHTML = "";
+
+    if(list.length === 0){
+      section.innerHTML = `
+      <p style="text-align:center;font-weight:600;font-size:18px;color:#cc5200;">
+      No products found
+      </p>`;
+      return;
+    }
+
+    list.forEach(p=>{
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+      <img src="${p.image}" alt="${p.name}">
+      <div class="card-overlay">
+        <a href="${p.page}">View</a>
+        <button class="like-btn">🤍</button>
+      </div>
+      <div class="card-content">
+        <h3 title="${p.name}">${p.name}</h3>
+      </div>
+      `;
+
+      section.appendChild(card);
+
+      const likeBtn = card.querySelector(".like-btn");
+
+      // Load initial heart state from MongoDB
+      fetch(`http://localhost:4000/wishlist/${username}`)
+        .then(r => r.json())
+        .then(data => {
+          const wishlist = data.items || [];
+          likeBtn.textContent = wishlist.some(w=>w.name===p.name) ? "❤️" : "🤍";
+        }).catch(()=>{});
+
+      likeBtn.addEventListener("click", async ()=>{
+        try {
+          const res = await fetch(`http://localhost:4000/wishlist/${username}`);
+          const data = await res.json();
+          let wishlist = data.items || [];
+          const index  = wishlist.findIndex(w=>w.name===p.name);
+          if(index > -1){
+            wishlist.splice(index,1);
+            likeBtn.textContent = "🤍";
+          }else{
+            wishlist.push(p);
+            likeBtn.textContent = "❤️";
+          }
+          await fetch(`http://localhost:4000/wishlist/${username}`, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({items: wishlist})
+          });
+          updateWishlistCount();
+        } catch(e) {}
+      });
+
+    });
+  }
+
+  /* SEARCH */
+
+  searchInput.addEventListener("input", ()=>{
+    const keyword = searchInput.value.toLowerCase();
+    display(products.filter(p=>p.name.toLowerCase().includes(keyword)));
+  });
+
+  /* CART COUNT */
+
+  async function updateCartCount(){
+    const res  = await fetch(`http://localhost:4000/cart/${username}`);
+    const data = await res.json();
+    const count= (data.items || []).reduce((sum,i)=>sum+i.quantity, 0);
+    cartLinkEl.textContent = `Cart (${count})`;
+  }
+
+  display(products);
+  updateCartCount();
+  updateWishlistCount();
+
+})
+.catch(err=>console.error(err));
+
+</script>
+
+<script src="theme.js"></script>
+
+</body>
+</html>

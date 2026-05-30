@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Product - Twisted Thread</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif;}
+body {background-color:#FAFAFA; color:#333;}
+.dark-mode {background-color:#121212; color:#f2f2f2;}
+.dark-mode header {background-color:#2C2C2C;}
+.dark-mode footer {background-color:#1A1A1A; color:#FF6B6B;}
+.dark-mode nav a {color:#FFB6B6;}
+.dark-mode nav a:hover {color:#FF6B6B;}
+.dark-mode .option-btn {background:#1e1e1e; border-color:#444; color:#f2f2f2;}
+.dark-mode .option-btn.active {background:#1a0a00; border-color:#cc5200; color:#ff8c42;}
+.dark-mode .option-btn:hover {border-color:#FF6B6B;}
+.dark-mode .qty-btn {background:#2a2a2a; border-color:#555; color:#f2f2f2;}
+.dark-mode .qty-display {background:#1e1e1e; border-color:#444; color:#f2f2f2;}
+.dark-mode .stock-box {background:#1e1e1e; border-color:#333;}
+.dark-mode .price-row {background:#1e1e1e;}
+.dark-mode .section-label {color:#bbb;}
+.dark-mode .material-line {color:#aaa;}
+header{background:#fff; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.1); position:sticky; top:0; z-index:1000;}
+header h1{color:#FF6B6B; font-size:32px; font-family:'Pacifico', cursive;}
+nav{display:flex; align-items:center; gap:4px;}
+nav a{margin-left:20px; text-decoration:none; color:#333; font-weight:600; font-size:14px; transition:0.3s;}
+nav a:hover{color:#FF6B6B;}
+.dark-btn{background:none; color:#333; border:none; font-size:18px; margin-left:18px; cursor:pointer; transition:0.3s; display:flex; align-items:center;}
+.dark-btn:hover{color:#FF6B6B; transform:scale(1.1);}
+.dark-mode .dark-btn{color:#FFB6B6;}
+.user-menu{position:relative; display:inline-flex; align-items:center; margin-left:20px;}
+.user-btn{background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#333; padding:0; transition:0.3s;}
+.user-btn:hover{color:#FF6B6B;}
+.dark-mode .user-btn{color:#FFB6B6;}
+.user-avatar{width:30px; height:30px; border-radius:50%; background:#FF6B6B; color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0;}
+.user-chevron{font-size:10px; color:#888; transition:transform 0.25s;}
+.user-menu.open .user-chevron{transform:rotate(180deg);}
+.dropdown{display:none; position:absolute; right:0; top:calc(100% + 12px); background:#fff; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:180px; z-index:999; overflow:hidden; border:1px solid #f0e0e0;}
+.dropdown.show{display:block; animation:fadeDown 0.2s ease;}
+@keyframes fadeDown{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);}}
+.dropdown-header{padding:14px 16px 10px; border-bottom:1px solid #f5e8e8;}
+.dropdown-header p{font-size:13px; font-weight:700; color:#333; margin:0 0 2px;}
+.dropdown-header span{font-size:11px; color:#999; font-weight:400;}
+.dropdown button{width:100%; padding:11px 16px; border:none; background:none; text-align:left; font-size:13px; font-weight:600; cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:9px; color:#555;}
+.dropdown button:hover{background:#fff5f5; color:#e63946;}
+.dark-mode .dropdown{background:#2b2b2b; border:1px solid #3a3a3a;}
+.dark-mode .dropdown-header{border-bottom:1px solid #3a3a3a;}
+.dark-mode .dropdown-header p{color:#f2f2f2;}
+.dark-mode .dropdown button{color:#ccc;}
+.dark-mode .dropdown button:hover{background:#333; color:#ff8e8e;}
+.product-container {max-width:1000px; margin:30px auto 50px; display:flex; gap:50px; flex-wrap:wrap; justify-content:center; align-items:flex-start; padding:0 20px;}
+.product-container img {width:400px; height:400px; object-fit:cover; border:4px solid #FF6B6B; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+.product-details {max-width:460px; display:flex; flex-direction:column; gap:16px;}
+.product-details h2 {font-size:26px; color:#FF6B6B;}
+.material-line {font-size:14px; color:#666;}
+.stock-box {display:flex; align-items:center; gap:8px; background:#f9f9f9; border:1px solid #e5e5e5; border-radius:8px; padding:10px 14px;}
+.stock-dot {width:10px; height:10px; border-radius:50%; flex-shrink:0;}
+.in-stock-dot {background:green;}
+.out-stock-dot {background:red;}
+.stock-text {font-weight:600; font-size:15px;}
+.in-stock-text {color:green;}
+.out-stock-text {color:red;}
+.price-row {background:#fff5f0; border-radius:10px; padding:12px 16px; display:flex; align-items:baseline; gap:10px;}
+.price {font-size:26px; font-weight:700; color:#cc5200;}
+.price-note {font-size:13px; color:#999;}
+.section-label {font-weight:600; font-size:14px; margin-bottom:6px; display:block; color:#555;}
+.option-buttons {display:flex; gap:10px; flex-wrap:wrap;}
+.option-btn {padding:8px 14px; border-radius:30px; border:2px solid #ddd; cursor:pointer; font-size:14px; font-weight:600; background:white; transition:all 0.2s; color:#333;}
+.option-btn:hover {border-color:#FF6B6B;}
+.option-btn.active {border-color:#cc5200; background:#fff5f0; color:#cc5200;}
+.qty-row {display:flex; align-items:center;}
+.qty-btn {width:38px; height:38px; border:2px solid #ddd; background:white; font-size:20px; font-weight:700; cursor:pointer; color:#333; transition:all 0.2s; display:flex; align-items:center; justify-content:center;}
+.qty-btn:first-child {border-radius:8px 0 0 8px;}
+.qty-btn:last-child  {border-radius:0 8px 8px 0;}
+.qty-btn:hover:not(:disabled) {background:#fff5f0; border-color:#cc5200; color:#cc5200;}
+.qty-btn:disabled {opacity:0.35; cursor:not-allowed;}
+.qty-display {width:52px; height:38px; border:2px solid #ddd; border-left:none; border-right:none; text-align:center; font-size:16px; font-weight:700; background:white; display:flex; align-items:center; justify-content:center; color:#333;}
+.add-cart {padding:13px 20px; border:none; border-radius:10px; font-weight:700; cursor:pointer; font-size:16px; background-color:#cc5200; color:#fff; transition:0.3s; letter-spacing:0.3px;}
+.add-cart:hover:not(:disabled) {background-color:#b34700; transform:translateY(-1px);}
+.add-cart:disabled {background:#bbb; cursor:not-allowed; transform:none;}
+footer {background-color:#fff; padding:30px; text-align:center; margin-top:50px; box-shadow:0 -2px 8px rgba(0,0,0,0.05);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Twisted Thread</h1>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="cart.html" id="cart-link">Cart</a>
+    <a href="wishlist.html" id="wishlist-count">Wishlist</a>
+    <div class="user-menu" id="user-menu">
+      <button class="user-btn" id="user-btn" aria-haspopup="true" aria-expanded="false">
+        <div class="user-avatar" id="user-avatar">G</div>
+        <span>Hi, </span><span id="nav-username">Guest</span>
+        <span class="user-chevron">▾</span>
+      </button>
+      <div class="dropdown" id="dropdown-menu" role="menu">
+        <div class="dropdown-header">
+          <p id="dropdown-name">Guest</p>
+          <span>My Account</span>
+        </div>
+        <button onclick="logout()" role="menuitem">Logout</button>
+      </div>
+    </div>
+    <button id="dark-toggle" class="dark-btn">🌙</button>
+  </nav>
+</header>
+
+<a href="home.html" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;margin:20px 20px;">
+  <div style="width:46px;height:46px;background:white;border:3px solid #cc5200;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;"
+    onmouseover="this.style.background='#cc5200';this.querySelector('svg').setAttribute('stroke','white')"
+    onmouseout="this.style.background='white';this.querySelector('svg').setAttribute('stroke','#cc5200')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#cc5200" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+    </svg>
+  </div>
+</a>
+
+<div class="product-container">
+  <img src="https://m.media-amazon.com/images/I/61n8NutspsL.jpg" alt="Crochet Flowers Bouquet">
+  <div class="product-details">
+    <h2>Crochet Flowers Bouquet</h2>
+    <p class="material-line"><strong>Material:</strong> Cotton Yarn</p>
+    <div class="stock-box">
+      <div class="stock-dot in-stock-dot" id="stock-dot"></div>
+      <span class="stock-text in-stock-text" id="stock-text">Loading...</span>
+    </div>
+    <div class="price-row">
+      <span class="price" id="display-price"></span>
+      <span class="price-note" id="price-note"></span>
+    </div>
+    <div>
+      <span class="section-label">Select Color:</span>
+      <div class="option-buttons">
+        <button class="option-btn active" data-color="Crimson Red"     onclick="selectColor(this)">Crimson Red</button>
+        <button class="option-btn"        data-color="Burnt Orange"    onclick="selectColor(this)">Burnt Orange</button>
+        <button class="option-btn"        data-color="Cornflower Blue" onclick="selectColor(this)">Cornflower Blue</button>
+        <button class="option-btn"        data-color="Bubblegum Pink"  onclick="selectColor(this)">Bubblegum Pink</button>
+        <button class="option-btn"        data-color="Soft Lavender"   onclick="selectColor(this)">Soft Lavender</button>
+      </div>
+    </div>
+    <div>
+      <span class="section-label">Quantity:</span>
+      <div class="qty-row">
+        <button class="qty-btn" id="qty-minus" disabled>−</button>
+        <div class="qty-display" id="qty-display">1</div>
+        <button class="qty-btn" id="qty-plus" disabled>+</button>
+      </div>
+    </div>
+    <button class="add-cart" id="addCartBtn" disabled>Loading...</button>
+  </div>
+</div>
+
+<footer><p>© 2025 Twisted Thread | Handmade with ❤</p></footer>
+
+<script>
+const productData = {
+  "Crimson Red":     { price: 589, defaultStock: 6 },
+  "Burnt Orange":    { price: 609, defaultStock: 4 },
+  "Cornflower Blue": { price: 649, defaultStock: 3 },
+  "Bubblegum Pink":  { price: 579, defaultStock: 7 },
+  "Soft Lavender":   { price: 639, defaultStock: 5 }
+};
+
+const PRODUCT_ID = "bouquet";
+let selectedColor = "Crimson Red";
+let quantity = 1;
+let stockCache = {};
+
+const stockText    = document.getElementById("stock-text");
+const stockDot     = document.getElementById("stock-dot");
+const displayPrice = document.getElementById("display-price");
+const priceNote    = document.getElementById("price-note");
+const qtyDisplay   = document.getElementById("qty-display");
+const qtyMinus     = document.getElementById("qty-minus");
+const qtyPlus      = document.getElementById("qty-plus");
+const addBtn       = document.getElementById("addCartBtn");
+const cartLink     = document.getElementById("cart-link");
+const username     = localStorage.getItem("username") || "guest";
+
+const storedName = localStorage.getItem("username") || "Guest";
+document.getElementById("nav-username").textContent = storedName;
+document.getElementById("dropdown-name").textContent = storedName;
+document.getElementById("user-avatar").textContent = storedName.charAt(0).toUpperCase();
+
+const userMenu = document.getElementById("user-menu");
+const userBtn  = document.getElementById("user-btn");
+const dropdown = document.getElementById("dropdown-menu");
+userBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const isOpen = dropdown.classList.toggle("show");
+  userMenu.classList.toggle("open", isOpen);
+  userBtn.setAttribute("aria-expanded", isOpen);
+});
+document.addEventListener("click", () => {
+  dropdown.classList.remove("show");
+  userMenu.classList.remove("open");
+});
+function logout() { localStorage.removeItem("username"); window.location.href = "login.html"; }
+
+async function fetchStock(color) {
+  try {
+    const res = await fetch(`http://localhost:4000/stock/init`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId: PRODUCT_ID, size: color, stock: productData[color].defaultStock })
+    });
+    const data = await res.json();
+    stockCache[color] = data.stock;
+  } catch(e) {
+    stockCache[color] = productData[color].defaultStock;
+  }
+}
+
+function updateUI() {
+  const stock = stockCache[selectedColor];
+  if (stock === undefined) return;
+
+  const data = productData[selectedColor];
+  if (quantity > stock) quantity = Math.max(1, stock);
+  if (quantity < 1)     quantity = 1;
+  qtyDisplay.textContent = quantity;
+
+  const total = data.price * quantity;
+  displayPrice.textContent = `₹${total.toLocaleString('en-IN')}`;
+  priceNote.textContent = quantity === 1
+    ? "for 1 item"
+    : `for ${quantity} items (₹${data.price.toLocaleString('en-IN')} each)`;
+
+  if (stock <= 0) {
+    stockText.textContent = "Out of Stock";
+    stockText.className   = "stock-text out-stock-text";
+    stockDot.className    = "stock-dot out-stock-dot";
+    addBtn.disabled       = true;
+    addBtn.textContent    = "Out of Stock";
+    qtyMinus.disabled     = true;
+    qtyPlus.disabled      = true;
+  } else {
+    stockText.textContent = `In Stock: ${stock} item${stock > 1 ? 's' : ''}`;
+    stockText.className   = "stock-text in-stock-text";
+    stockDot.className    = "stock-dot in-stock-dot";
+    addBtn.disabled       = false;
+    addBtn.textContent    = "Add to Cart";
+    qtyMinus.disabled     = quantity <= 1;
+    qtyPlus.disabled      = quantity >= stock;
+  }
+}
+
+async function selectColor(btn) {
+  document.querySelectorAll(".option-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  selectedColor = btn.dataset.color;
+  quantity = 1;
+  if (stockCache[selectedColor] === undefined) {
+    stockText.textContent = "Loading...";
+    await fetchStock(selectedColor);
+  }
+  updateUI();
+}
+
+qtyMinus.addEventListener("click", () => { if (quantity > 1) { quantity--; updateUI(); } });
+qtyPlus.addEventListener("click",  () => { if (quantity < stockCache[selectedColor]) { quantity++; updateUI(); } });
+
+addBtn.addEventListener("click", async () => {
+  const stock = stockCache[selectedColor];
+  if (!stock || stock <= 0 || quantity > stock) return;
+
+  const product = {
+    name:      `Crochet Flowers Bouquet - ${selectedColor}`,
+    price:     productData[selectedColor].price,
+    image:     "https://m.media-amazon.com/images/I/61n8NutspsL.jpg",
+    size:      selectedColor,
+    quantity:  quantity,
+    productId: PRODUCT_ID
+  };
+
+  try {
+    const res    = await fetch(`http://localhost:4000/cart/${username}`);
+    let cartData = await res.json();
+    let cart     = cartData.items || [];
+    const index  = cart.findIndex(c => c.name === product.name);
+    if (index > -1) cart[index].quantity += quantity;
+    else cart.push(product);
+    const grandTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    await fetch(`http://localhost:4000/cart/${username}`, {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({cart, grandTotal})
+    });
+    await fetch(`http://localhost:4000/stock/update`, {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ productId: PRODUCT_ID, size: selectedColor, delta: -quantity })
+    });
+    stockCache[selectedColor] = stock - quantity;
+  } catch(e) {}
+
+  quantity = 1;
+  updateUI();
+  updateCartCount();
+  window.location.href = "cart.html";
+});
+
+async function updateCartCount() {
+  try {
+    const res  = await fetch(`http://localhost:4000/cart/${username}`);
+    const data = await res.json();
+    cartLink.textContent = `Cart (${(data.items||[]).reduce((sum,i)=>sum+i.quantity,0)})`;
+  } catch(e) {}
+}
+
+async function updateWishlistCount() {
+  try {
+    const res  = await fetch(`http://localhost:4000/wishlist/${username}`);
+    const data = await res.json();
+    const el = document.getElementById("wishlist-count");
+    if(el) el.textContent = `Wishlist (${(data.items||[]).length})`;
+  } catch(e) {}
+}
+
+const darkToggle = document.getElementById("dark-toggle");
+if (localStorage.getItem("theme") === "dark") { document.body.classList.add("dark-mode"); darkToggle.textContent = "☀️"; }
+darkToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.contains("dark-mode");
+  darkToggle.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+});
+
+window.addEventListener("DOMContentLoaded", async () => {
+  updateCartCount();
+  updateWishlistCount();
+  await Promise.all(Object.keys(productData).map(c => fetchStock(c)));
+  updateUI();
+});
+</script>
+</body>
+</html>
